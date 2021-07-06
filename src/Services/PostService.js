@@ -4,37 +4,35 @@ const PostService = {
     getPosts: async (parkid) => {
         const response = await fetch(URL + "nps");
         const data = await response.json();
-        // setPosts(data);
+        return data
+    },
+
+    getPost: async (postId) => {
+        const response = await fetch(URL + "nps/" + postId);
+        const data = await response.json();
         return data
     },
 
     addPosts: async (newPost) => {
-        const response = await fetch(URL, {
+        const response = await fetch(URL + "nps", {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(newPost),
         });
-        // getPosts();
         const data = await response.json();
         return data
     },
 
-    // getTargetPost: (post) => {
-    //     setTargetPost(post);
-    //     props.history.push("/edit");
-    // };
-
     updatePost: async (post, id) => {
-        const response = await fetch(URL + post.id + "/", {
+        const response = await fetch(URL + "nps/" + post.id, {
             method: "put",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(post),
         }) ;
-        // getPosts();
         const data = await response.json();
         return data
     },
@@ -43,10 +41,6 @@ const PostService = {
         const response = await fetch(URL + "nps/" + post.id + "/", {
             method: "delete",
         });
-        // getPosts();
-        const data = await response.json();
-        return data
-        // props.history.push("/");
     }
 }
 

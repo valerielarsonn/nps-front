@@ -1,28 +1,34 @@
-import React, { useEffect } from "react";
-import Form from "../components/Form"
+import React, { useEffect, useState } from "react";
+import Form from "./Form";
+import PostService from "../Services/PostService";
+
+import "../styles.scss";
 
 const Edit = (props) => {
+  const [targetPost, setTargetPost] = useState(null);
+  const parkId = props.match.params.parkid;
+  const postId = props.match.params.postid;
+  useEffect(async () => {
+    const post = await PostService.getPost(postId)
+    setTargetPost(post);
+  }, [])
 
-    // const getTargetPost = (post) => {
-    //     setTargetPost(post);
-    //     props.history.push("/edit");
-    // };
-    const updatePost = async (post) => {
-        const response = await fetch(process.env.REACT_APP_BACKEND + post.id + "/", {
-          method: "put",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(post),
-        });
-        // getPosts();
-    };
+  const onUpdate = (post) => {
+    PostService.updatePost({id:postId, ...post})
+    .then(() => {
+      props.redirect(parkId)
+    })
+  }
 
-    useEffect(() => {
-        // getPosts();
-    }, []);
-
-    return <h1>Edit Page</h1>
+    return (
+      <div className= "App">
+        { targetPost && <Form
+          initialPost={targetPost}
+          handleSubmit={onUpdate}
+          buttonLabel="update post"
+        />}
+      </div>
+    )
 };
 
 export default Edit;

@@ -1,40 +1,28 @@
-
 import ParkDetails from "../pages/ParkDetails";
-import Create from "../pages/Create"
-import Edit from "../pages/Edit"
 import Home from "../pages/Home";
-import PostDetails from "../pages/PostDetails";
 import PostService from "../Services/PostService";
-// import Form from "./Form";
-
-import React, { useState, useEffect } from "react";
-import { Route, Switch, Link } from "react-router-dom";
-// import { Redirect } from "react-router";
+import Create from "../pages/Create";
+import Edit from "../pages/Edit";
+import React, { useState } from "react";
+import { Route, Switch, useHistory } from "react-router-dom";
 
 function Main(props) {
-
-    const URL = "https://nps-projectfour.herokuapp.com/nps"
-    
-
+    const history = useHistory();
     const [posts, setPosts] = useState(null);
-    const nullPost = {
-        name: "",
-        coordinates: "",
-        posting: "",
-        image: "",
+
+
+    const redirectToParkDetails = (parkid) => {
+      history.push(`/parks/${parkid}`)
     };
 
-    const [targetPost, setTargetPost] = useState(nullPost);
+    const onAdd = async (post) => {
+      const {park_id} = await PostService.addPosts(post)
+      redirectToParkDetails(park_id);
+    };
 
-
-
-    useEffect(() => {
-        PostService.getPosts();
-    }, []);
 
     return (
     <div>
-      {/* <Link to="/park/:id/create"><button>Create a new Posting</button></Link> */}
       <Switch>
       <Route
           exact
@@ -43,39 +31,27 @@ function Main(props) {
         />
         <Route
           exact
-          path="/park/:id"
+          path="/parks/:id"
           render={(routerProps) => <ParkDetails {...routerProps} />}
         />
-        {/* <Route
-          path="/park/:id/posts/:id"
-          render={(routerProps) => (
-            <PostDetails 
-              {...routerProps} 
-              posts={posts} 
-            //   edit={getTargetPost}
-              deletePost={PostService.deletePost} 
-            />
-          )}
-        /> */}
+
         <Route
-          path="/park/:parkid/create"
+          exact
+          path="/parks/:parkid/posts/create"
           render={(routerProps) => (
-            <Create 
+            <Create
               {...routerProps}
-              initialPost={nullPost}
-              handleSubmit={PostService.addPosts}
-              buttonLAbel="create post"
+              redirect = {redirectToParkDetails}
             />
           )}
         />
         <Route
+          exact
           path="/parks/:parkid/posts/:postid/edit"
           render={(routerProps) => (
             <Edit
-              {...routerProps} 
-              initialPost={targetPost}
-              handleSubmit={PostService.updatePost}
-              buttonLabel="update post"
+              {...routerProps}
+              redirect = {redirectToParkDetails}
             />
           )}
         />

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import Post from "../components/Post";
 import NPS from "../Services/NPS";
-import PostService from "../Services/PostService"
+import PostService from "../Services/PostService";
 
+import "../styles.scss";
 
 
 const ParkDetails = (props) => {
@@ -31,16 +32,21 @@ const ParkDetails = (props) => {
     const deletePost = async (postToDelete) => {
        await PostService.deletePost(postToDelete);
        const updatedPosts = posts.filter (post => postToDelete.id != post.id)
+       console.log(updatedPosts)
        setPosts(updatedPosts)
     }
     
 
     return (
-        <div>
+        <div className="App">
         { park && <h1>{park.fullName}</h1>}
+        { park && <h3>STATE: {park.states}</h3>}
+        { park && <h3>{park.latLong}</h3>}
+        { park && <a target="_blank" href={park.url}>NPS WEBSITE</a>}
+        { park && <h4>{park.description}</h4>}
+        { park && <Link to={`/parks/${park.id}/posts/create`}><button>Create a new Posting</button></Link> }
         {posts.map((post) => <Post post={post} editPost={editPost} deletePost={deletePost} key={post.id}/>)}
         </div>
-        // <Link to={`/park/${park.id}`}>{park.name}</Link>
     );
 }
 

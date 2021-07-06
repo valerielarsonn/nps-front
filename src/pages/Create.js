@@ -1,25 +1,36 @@
 import React from "react";
-import Main from "../components/Main"
-import { useEffect } from "react";
+import Form from "./Form";
+import PostService from "../Services/PostService";
+
+import "../styles.scss";
 
 const Create = (props) => {
-    const addPosts = async (newPost) => {
-        const response = await fetch(process.env.REACT_APP_BACKEND, {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-            body: JSON.stringify(newPost),
-        });
-        // getPosts();
-      };
+  const parkId = props.match.params.parkid;
+
+  const nullPost = {
+    name: "",
+    coordinates: "",
+    posting: "",
+    image: "",
+    };
+
+  const onAdd = (post) => {
+    PostService.addPosts({...post, park_id: parkId})
+    .then(() => {
+      props.redirect(parkId)
+    })
+  }
 
 
-    useEffect(() => {
-        // getPosts();
-    }, []);
-
-    return <h1>New Page</h1>
+    return (
+      <div className= "App">
+        <Form
+            initialPost= {nullPost}
+            handleSubmit={onAdd}
+            buttonLabel="create new post"
+        />
+      </div>
+    )
 };
 
 export default Create;
