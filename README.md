@@ -7,11 +7,11 @@
 ## Project Summary
  
  
-<img src="" width="250"> 
+<img src="https://i.imgur.com/KTlWQSk.png" width="250"> 
  
-<img src="" width="250"> 
+<img src="https://i.imgur.com/dHwFjpZ.png" width="250"> 
  
- <img src="" width="250"> 
+ <img src="https://i.imgur.com/7AoS4om.png" width="250"> 
  
 ## Technology Used
 - Javascript
@@ -34,7 +34,7 @@
 | Method | Endpoint | Resource/View |
 |--------|----------|---------------|
 |HOME PAGE - GET| "/home" | Display a list of national parks from a search|
-|PARK DETAILS PAGE - GET| "/parks/id" | Display about section for specific NP and show all postings associated |
+|PARK DETAILS PAGE - GET| "/parks/parkid" | Display about section for specific NP and show all postings associated |
 |NEW| "/parks/parkid/posts/create" | Creates a new post|
 |PUT| "/parks/parkid/posts/postid/edit" | Updates specific post|
 
